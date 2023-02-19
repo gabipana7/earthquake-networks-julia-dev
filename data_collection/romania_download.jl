@@ -1,7 +1,8 @@
 using CSV, DataFrames, Dates
 
 url = "http://www.infp.ro/data/romplus.txt"
-download(url,"./romania.txt")
+filename = "./romania.txt"
+download(url,filename)
 
 
 # Declare types of the needed columns
@@ -41,7 +42,8 @@ df.Datetime = DateTime.(df.Datetime, dateformat)
 romania = df[df.Magnitude .> 0.0,:]
 
 # Write to CSV
-CSV.write("../../data/romania.csv", romania)
+mkpath("./data/")
+CSV.write("./data/romania.csv", romania)
 
 # Delete original file
 rm("romania.txt")

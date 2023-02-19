@@ -5,7 +5,7 @@ function motifs_discovery(inputName,queryName)
 
     # Define workind directory and path to nemopmap
     scriptdir = @__DIR__ 
-    nemomapdir = scriptdir * "\\src\\nemomap"
+    nemomapdir = scriptdir * "/src/nemomap"
     pushfirst!(PyVector(pyimport("sys")."path"), nemomapdir)
 
     # Include motifsdiscovery python code
