@@ -20,6 +20,7 @@ function create_network(df, df_cubes; edgeWeight=false)
     # Use cubeIndex to add index property to all graph nodes
     for i in 1:nv(MG)
         set_prop!(MG, i, :cubeIndex, df_cubes.cubeIndex[i])
+        set_prop!(MG, i, :degree, 0)
     end
     # Used to easily access the information, based on cubeIndex and not graph index
     set_indexing_prop!(MG, :cubeIndex)
@@ -44,11 +45,17 @@ function create_network(df, df_cubes; edgeWeight=false)
                 # If there is, increment by 1
                 set_prop!(MG,current_node,target_node,
                         :weight, get_prop(MG,Edge(current_node,target_node),:weight)+1)
+
+                set_prop!(MG, current_node, :degree, get_prop(MG,current_node,:degree)+1)
+                set_prop!(MG, target_node, :degree, get_prop(MG,target_node,:degree)+1)
                 # Then return to beginning (I do not want to reset the edge below)
                 continue
             else
                 # If there is no edge, create one with weight 1
                 add_edge!(MG,current_node,target_node,:weight,1)
+                
+                set_prop!(MG, current_node, :degree, get_prop(MG,current_node,:degree)+1)
+                set_prop!(MG, target_node, :degree, get_prop(MG,target_node,:degree)+1)                
             end
         end
     end

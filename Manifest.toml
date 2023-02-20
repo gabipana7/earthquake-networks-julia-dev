@@ -2,7 +2,7 @@
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "ace76d5a08c64b76f14b5aaf2753bc01a8b2abc9"
+project_hash = "363ee7d56d1171e562c08466b20812ba341461a4"
 
 [[deps.AbstractFFTs]]
 deps = ["ChainRulesCore", "LinearAlgebra"]
@@ -1317,6 +1317,12 @@ git-tree-sha1 = "62f417f6ad727987c755549e9cd88c46578da562"
 uuid = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 version = "1.95.1"
 
+[[deps.PyPlot]]
+deps = ["Colors", "LaTeXStrings", "PyCall", "Sockets", "Test", "VersionParsing"]
+git-tree-sha1 = "f9d953684d4d21e947cb6d642db18853d43cb027"
+uuid = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+version = "2.11.0"
+
 [[deps.QOI]]
 deps = ["ColorTypes", "FileIO", "FixedPointNumbers"]
 git-tree-sha1 = "18e8f4d1426e965c7b532ddd260599e1510d26ce"
@@ -1446,6 +1452,12 @@ deps = ["Libdl", "SIMD"]
 git-tree-sha1 = "2436b15f376005e8790e318329560dcc67188e84"
 uuid = "7b38b023-a4d7-4c5e-8d43-3f3097f304eb"
 version = "0.3.3"
+
+[[deps.SciPy]]
+deps = ["InteractiveUtils", "PyCall"]
+git-tree-sha1 = "b82bc3390c68975bc70e943f6cedf14e5050b7b5"
+uuid = "ebc72ef8-9537-4fb0-b64e-ac76025fed2d"
+version = "0.1.4"
 
 [[deps.Scratch]]
 deps = ["Dates"]
