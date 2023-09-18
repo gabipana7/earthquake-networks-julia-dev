@@ -1,7 +1,4 @@
 using CSV, DataFrames
-# using FileIO, Dates
-# using Graphs, MetaGraphs
-# using DataStructures
 using PyCall
 using CairoMakie
 
@@ -31,8 +28,10 @@ function networks_parameter_dependency(region; magnitude_threshold=0.0)
     cube_cell_sizes= range(0.5, 20, step=0.5)
 
     degrees_alpha=[]
+    degrees_sigma = []
     degrees_xmin=[]
     marker_size=[]
+    
 
     for cell_size in cube_cell_sizes
         df, df_cubes = region_cube_split(df,cell_size=cell_size)
@@ -45,12 +44,13 @@ function networks_parameter_dependency(region; magnitude_threshold=0.0)
 
         fit = powlaw.Fit(degrees);
         push!(degrees_alpha, fit.alpha)
+        push!(degrees_sigma, fit.sigma)
         push!(degrees_xmin, fit.xmin)
         push!(marker_size, fit.power_law.KS(data=degrees))
 
     end
 
-    results = DataFrame([cube_cell_sizes, degrees_alpha, degrees_xmin, marker_size], ["cell_size", "alpha", "xmin", "KS"])
+    results = DataFrame([cube_cell_sizes, degrees_alpha, degrees_sigma, degrees_xmin, marker_size], ["cell_size", "alpha", "sigma", "xmin", "KS"])
     CSV.write("./results/$region/$(region)_minmag_$(magnitude_threshold)_alpha_xmin_dependency_cell_size.csv", results, delim=",", header=true);
 
 end
@@ -96,11 +96,11 @@ end
 ###########################################################################################################################
 ###########################################################################################################################
 
-region_list = ["romania", "california", "italy", "japan"]
+region_list = ["Romania", "Italy", "California", "Japan"]
 
 for region in region_list
-    # networks_parameter_dependency(region)
-    networks_parameter_dependency_plot_cairo(region)
+    networks_parameter_dependency(region)
+    # networks_parameter_dependency_plot_cairo(region)
 end
 
 
@@ -144,70 +144,3 @@ CSV.write("./results/best_fits_all_regions_minmag_$(magnitude_threshold)_alpha_x
 
 ###########################################################################################################################
 
-
-# if region == "romania"
-#     cell_sizes = [3.5, 4.0, 4.5, 5.0, 5.5];
-#     # minimum_magnitudes = [0,1,2,3];
-# elseif region == "california"
-#     cell_sizes = [1.0, 1.5, 2.0];
-#     # minimum_magnitudes = [2,3];
-# elseif region == "italy"
-#     cell_sizes = [4.0, 4.5, 5.0, 5.5, 6.0];
-#     # minimum_magnitudes = [2,3];
-# elseif region == "japan"
-#     cell_sizes = [2.5, 3.0, 3.5, 4.0, 5.0];
-#     # minimum_magnitudes = [2,3,4,5];
-# end;
-
-
-###########################################################################################################################
-###########################################################################################################################
-
-
-
-# Old plot using Plots.jl
-# ######################################################################################################################################
-# # Parameter dependency connectivity on cell_size plot function
-# function networks_parameter_dependency_plot(region; magnitude_threshold=0.0, goodness_of_fit=true)
-    
-#     results = CSV.read("./results/$region/$(region)_minmag_$(magnitude_threshold)_alpha_xmin_dependency_cell_size.csv", DataFrame)
-
-#     # Goodness of fit based on KS as marker sizes (smaller is better)
-#     if goodness_of_fit==true
-#         # Multipliers based on plot, manually set to look good 
-#         if region == "romania"
-#             multiplier_for_goodness_of_fit = 15
-#         elseif region =="california"
-#             multiplier_for_goodness_of_fit = 15
-#         elseif region =="italy"
-#             multiplier_for_goodness_of_fit = 20
-#         elseif region =="japan"
-#             multiplier_for_goodness_of_fit = 25
-#         end
-#         marker_size_log = 10 .^ (multiplier_for_goodness_of_fit .* results.KS)
-
-#         p1 = Plots.scatter(results.cell_size, results.alpha, xlabel="cube size", ylabel="alpha", markersize = marker_size_log);
-#         # vspan!([2,13], linecolor = :grey, fillcolor = :grey, alpha=0.3, label="")
-#         # hspan!([2,3], linecolor = :red, fillcolor = :red, alpha=0.3, label="")
-#         # hspan!([1.5,2], linecolor = :red, fillcolor = :red, alpha=0.2, label="")
-#         p2 = Plots.scatter(results.cell_size, results.xmin, xlabel="cube size", ylabel="xmin", markersize = marker_size_log);
-#         # vspan!([2,13], linecolor = :grey, fillcolor = :grey, alpha=0.3, label="")
-#         fig = Plots.plot(p1,p2, layout=(1,2), figsize=(12,17))
-#         Plots.plot!(fig, size=(1000,400))
-#         Plots.savefig(fig, "./results/$region/$(region)_minmag_$(magnitude_threshold)_alpha_xmin_dependency_cell_size_goodness_fit.png")
-#     end
-
-
-#     # No goodness of fit based on KS
-#     p1 = Plots.scatter(results.cell_size, results.alpha, xlabel="cube size", ylabel="alpha");
-#     # vspan!([2,13], linecolor = :grey, fillcolor = :grey, alpha=0.3, label="")
-#     # hspan!([2,3], linecolor = :red, fillcolor = :red, alpha=0.3, label="")
-#     # hspan!([1.5,2], linecolor = :red, fillcolor = :red, alpha=0.2, label="")
-#     p2 = Plots.scatter(results.cell_size, results.xmin, xlabel="cube size", ylabel="xmin");
-#     # vspan!([2,13], linecolor = :grey, fillcolor = :grey, alpha=0.3, label="")
-#     fig = Plots.plot(p1,p2, layout=(1,2), figsize=(12,17))
-#     Plots.plot!(fig, size=(1000,400))
-#     Plots.savefig(fig, "./results/$region/$(region)_minmag_$(magnitude_threshold)_alpha_xmin_dependency_cell_size.png")
-
-# end
-# ######################################################################################################################################
