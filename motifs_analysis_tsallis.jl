@@ -63,12 +63,21 @@ function analize_motifs_triangle_tsallis(region, weighted_by)
             motif_energy = total_mean_energy(motifs, df_filtered, df_filtered_cubes);
             areas = area_triangles(motifs, df_filtered_cubes);
 
-            # Area weighted by total/mean energy
-            area_weight = []
-            for key in keys(motif_energy)
-                # Used to filter out zeros and very small areas (triangles on the vertical for example)
-                if areas[key] > 1
-                    push!(area_weight, areas[key]/motif_energy[key][weight_key])
+            if weighted_by != "noweight"
+                area_weight = []
+                for key in keys(motif_energy)
+                    # Used to filter out zeros and very small areas (triangles on the vertical for example)
+                    if areas[key] > 1
+                        push!(area_weight, areas[key]/motif_energy[key][weight_key])
+                    end
+                end
+            else
+                area_weight = []
+                for key in keys(motif_energy)
+                    # Used to filter out zeros and very small areas (triangles on the vertical for example)
+                    if areas[key] > 1
+                        push!(area_weight, areas[key]/1)
+                    end
                 end
             end
 
@@ -167,11 +176,23 @@ function analize_motifs_tetrahedron_tsallis(region, weighted_by)
             volumes = volume_tetrahedrons(motifs, df_filtered_cubes);
 
             # Volumes weighted by total/mean energy
-            volume_weight = []
-            for key in keys(motif_energy)
-                # Used to filter out zeros and very small volumes (triangles on the vertical for example)
-                if volumes[key] > 1
-                    push!(volume_weight, volumes[key]/motif_energy[key][weight_key])
+            if weighted_by != "noweight"
+                # Volumes weighted by total/mean energy
+                volume_weight = []
+                for key in keys(motif_energy)
+                    # Used to filter out zeros and very small volumes (triangles on the vertical for example)
+                    if volumes[key] > 1
+                        push!(volume_weight, volumes[key]/motif_energy[key][weight_key])
+                    end
+                end
+            else
+                # Volumes weighted by total/mean energy
+                volume_weight = []
+                for key in keys(motif_energy)
+                    # Used to filter out zeros and very small volumes (triangles on the vertical for example)
+                    if volumes[key] > 1
+                        push!(volume_weight, volumes[key]/1)
+                    end
                 end
             end
 
