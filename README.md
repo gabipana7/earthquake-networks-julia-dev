@@ -1,4 +1,4 @@
-## seismic-networks-julia-dev
+## earthquake-networks-julia-dev
 
 ## DEVELOPMENT 
 ### This project aims to describe Seismic Regions using elements of Complex Networks
