@@ -34,6 +34,7 @@ docs/site/
 *.jpg
 *.jpeg
 *.webp
+*.zip
 
 gmt.history
 GMTplot.ps
