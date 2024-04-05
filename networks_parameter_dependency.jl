@@ -11,7 +11,7 @@ include("./src/network.jl")
 ###########################################################################################################################
 ###########################################################################################################################
 # Parameter dependency connectivity on cell_size results function
-function networks_parameter_dependency(region; magnitude_threshold=0.0)
+function networks_parameter_dependency(region, magnitude_threshold)
     # Read data
     path = "./data/"
     filepath = path * region * ".csv"
@@ -22,7 +22,7 @@ function networks_parameter_dependency(region; magnitude_threshold=0.0)
 
     # # Magnitude Threshold if you need it
     # magnitude_threshold = 0.0
-    # df = df[df.Magnitude .> magnitude_threshold,:];
+    df = df[df.Magnitude .> magnitude_threshold,:];
 
     # Cell sizes ranges from 0.5 to 20 with a 0.5 increment
     cube_cell_sizes= range(0.5, 20, step=0.5)
@@ -97,10 +97,13 @@ end
 ###########################################################################################################################
 
 region_list = ["Romania", "Italy", "California", "Japan"]
+magnitude_thresholds = [1.0, 2.0, 3.0, 4.0]
 
 for region in region_list
-    networks_parameter_dependency(region)
+    for magnitude_threshold in magnitude_thresholds
+        networks_parameter_dependency(region, magnitude_threshold)
     # networks_parameter_dependency_plot_cairo(region)
+    end
 end
 
 
